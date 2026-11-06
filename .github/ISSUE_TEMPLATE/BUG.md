@@ -7,6 +7,7 @@ labels: bug
 <!--
 Thanks for your interest in Leon! ❤️
 Please check if there is no similar issue before creating this one.
+If the bug is related to the setup, please submit the issue at: https://github.com/leon-ai/leon-cli/issues/new/choose
 -->
 
 ### Specs
@@ -14,8 +15,8 @@ Please check if there is no similar issue before creating this one.
 - Leon version:
 - OS (or browser) version:
 - Node.js version:
-- Complete "npm run check" output:
-- (optional) Leon package version:
+- Complete "leon check" (or "pnpm run check") output:
+- (optional) Leon skill version:
 
 ### Expected Behavior
 

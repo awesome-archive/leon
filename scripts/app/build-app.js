@@ -1,18 +1,18 @@
-import fs from 'fs'
-import browserify from 'browserify'
+import { execa } from 'execa'
 
-import log from '@/helpers/log'
+import { LogHelper } from '@/helpers/log-helper'
 
 /**
- * Build web app
+ * Build the selected client bundle for Leon's HTTP server.
  */
-export default () => new Promise((resolve) => {
-  browserify('app/js/main.es6.js')
-    .transform('babelify')
-    .bundle()
-    .on('error', err => log.error(`[${err.name}] ${err.message}`))
-    .pipe(fs.createWriteStream('app/js/main.js'))
+export default async function buildApp(options = {}) {
+  const { quiet = false, configFile = 'apps/web-legacy/vite.config.js' } = options
 
-  log.success('Web app built')
-  resolve()
-})
+  await execa('vite', ['build', '--config', configFile], {
+    stdio: quiet ? 'ignore' : 'inherit'
+  })
+
+  if (!quiet) {
+    LogHelper.success('Web app built')
+  }
+}

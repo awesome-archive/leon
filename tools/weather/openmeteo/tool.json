@@ -1,0 +1,66 @@
+{
+  "$schema": "../../../schemas/tool-schemas/tool.json",
+  "tool_id": "openmeteo",
+  "toolkit_id": "weather",
+  "name": "Open-Meteo",
+  "description": "Fetch current conditions and daily/hourly forecasts using Open-Meteo without an API key.",
+  "author": {
+    "name": "Louis Grenard",
+    "email": "louis@getleon.ai",
+    "url": "https://x.com/grenlouis"
+  },
+  "functions": {
+    "getWeather": {
+      "description": "Get current conditions and today's daily forecast by omitting dates. Use detail=hourly for intraday timing or changes. Supply dates only for another forecast interval; a missing boundary uses the supplied date.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string"
+          },
+          "start_date": {
+            "type": "string",
+            "description": "Start date in YYYY-MM-DD format. Provide it with end_date; for one day, use the same date for both. A missing boundary is normalized to the supplied boundary."
+          },
+          "end_date": {
+            "type": "string",
+            "description": "End date in YYYY-MM-DD format. Provide it with start_date; for one day, use the same date for both. A missing boundary is normalized to the supplied boundary."
+          },
+          "detail": {
+            "type": "string",
+            "enum": [
+              "summary",
+              "hourly"
+            ],
+            "description": "Summary returns current conditions and daily forecasts. Hourly also returns hourly series and units.",
+            "default": "summary"
+          }
+        },
+        "required": [
+          "location"
+        ],
+        "additionalProperties": false
+      },
+      "completion_review": "optional"
+    },
+    "configureVibesLocation": {
+      "description": "Set a temporary weather city for Vibes, or clear it to use my home city.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": ["string", "null"],
+            "description": "City and country selected by the owner for Vibes. Null clears the override."
+          },
+          "expiresAt": {
+            "type": "number",
+            "description": "Required when setting a city: owner-selected expiry in Unix milliseconds."
+          }
+        },
+        "required": ["location"],
+        "additionalProperties": false
+      },
+      "progressive_guidance": "Use only when the owner asks to change the weather location used by Vibes. Set an expiry agreed with the owner; ask if the duration is unclear. Pass location null to clear it. Ordinary weather lookups and travel memories must not change this preference. The override expires automatically and falls back to the home city without changing residence or memory."
+    }
+  }
+}
